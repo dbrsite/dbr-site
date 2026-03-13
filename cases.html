@@ -2,172 +2,75 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ДБР | Реєстр справ</title>
     <style>
         :root {
-            --dbr-blue: #24344d;
-            --btn-blue: #4b648a;
-            --bg: #1a202c;
-            --card-bg: #2d3748;
-            --accent: #60a5fa;
+            --bg: #0f172a;
+            --card: #1e293b;
+            --accent: #2563eb;
+            --text: #f8fafc;
         }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: white; margin: 0; padding: 20px; }
-        
-        .header-panel { 
-            max-width: 1200px; 
-            margin: 0 auto 30px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            border-bottom: 2px solid var(--btn-blue);
-            padding-bottom: 20px;
-        }
-
-        .btn-group { display: flex; gap: 10px; }
-
-        .btn-main { 
-            background: var(--btn-blue); 
-            color: white; 
-            border: none; 
-            padding: 12px 24px; 
-            cursor: pointer; 
-            text-transform: uppercase; 
-            font-weight: bold; 
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 14px;
-            transition: 0.2s;
-        }
-        .btn-main:hover { opacity: 0.9; transform: scale(1.02); }
-
-        .archive-grid { 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
-            gap: 25px; 
-        }
-
-        .case-card { 
-            background: var(--card-bg); 
-            border-radius: 12px; 
-            overflow: hidden; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-            transition: 0.3s;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .case-card:hover { transform: translateY(-8px); border-color: var(--accent); }
-
-        .case-img { 
-            width: 100%; 
-            height: 220px; 
-            object-fit: cover; 
-            background: #000;
-            border-bottom: 3px solid var(--btn-blue);
-        }
-
-        .case-body { padding: 20px; }
-        .case-title { font-size: 20px; font-weight: bold; margin-bottom: 12px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
-        .case-info { font-size: 14px; margin-bottom: 8px; color: #cbd5e1; line-height: 1.5; }
-        .case-info b { color: white; }
-        
-        .case-tag { display: inline-block; background: #e74c3c; padding: 4px 12px; border-radius: 4px; font-size: 11px; margin-bottom: 12px; font-weight: 900; }
-        
-        .btn-video { 
-            display: block; 
-            width: 100%; 
-            background: #334155; 
-            color: white; 
-            text-align: center; 
-            padding: 12px; 
-            text-decoration: none; 
-            border-radius: 6px; 
-            margin-top: 15px;
-            font-size: 13px;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-        .btn-video:hover { background: #475569; color: var(--accent); }
-
-        /* Модалка */
-        #form-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; }
-        .modal-content { max-width: 800px; margin: 2vh auto; background: white; height: 90vh; border-radius: 12px; position: relative; overflow: hidden; }
-        .close-modal { position: absolute; top: 15px; right: 20px; color: #000; cursor: pointer; font-size: 35px; font-weight: bold; z-index: 1001; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); padding: 20px; margin: 0; }
+        .header { max-width: 1200px; margin: 0 auto 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 20px; }
+        .grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: var(--card); border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+        .card-img { width: 100%; height: 200px; object-fit: cover; background: #000; }
+        .card-content { padding: 15px; }
+        .btn { display: inline-block; padding: 10px 20px; background: var(--accent); color: white; text-decoration: none; border-radius: 5px; font-weight: bold; margin-top: 10px; font-size: 13px; }
+        .btn-add { background: #16a34a; }
     </style>
 </head>
 <body>
 
-    <div class="header-panel">
-        <div>
-            <h1 style="margin:0; letter-spacing: 2px;">АРХІВ СПРАВ ДБР</h1>
-            <p style="color: #94a3b8; margin: 5px 0 0; text-transform: uppercase; font-size: 12px;">Єдина база кримінальних правопорушень</p>
-        </div>
-        <div class="btn-group">
-            <a href="#" class="btn-main" onclick="openModal()" style="background: #27ae60;">+ Опублікувати</a>
-            <a href="staff.html" class="btn-main">← Кабінет</a>
-        </div>
+<div class="header">
+    <h1>АРХІВ СПРАВ</h1>
+    <div>
+        <a href="https://docs.google.com/forms/d/1NYMnkDJGukVPPvnWcvNpatJqa5ZlSlLDU7oM92yeIT8/viewform" target="_blank" class="btn btn-add">+ Нова справа</a>
+        <a href="staff.html" class="btn" style="background:#475569">Назад</a>
     </div>
+</div>
 
-    <div id="archive-container" class="archive-grid">
-        <p style="text-align: center; grid-column: 1/-1;">Синхронізація з базою даних...</p>
-    </div>
-
-    <div id="form-modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal()">&times;</span>
-            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSe7yH4z8zY8w2h2B6f9t8i3S3l_y3S3l_y3S3l_y3S3l_y3S3l/viewform?embedded=true" width="100%" height="100%" frameborder="0">Завантаження...</iframe>
-        </div>
-    </div>
+<div id="cases-grid" class="grid">Завантаження бази...</div>
 
 <script>
-    function openModal() { document.getElementById('form-modal').style.display = 'block'; document.body.style.overflow = 'hidden'; }
-    function closeModal() { document.getElementById('form-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
-
     async function loadCases() {
-        // Твоє посилання на CSV таблицю
-        const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSiZtkfaA6lvG8mtMoozlgqfIVBi-A4VQaGwt2sEjOP5KdQBcanfEvJ5XBpB0kgHUyuVvgBuRTyEo8-/pub?gid=492248995&single=true&output=csv";
+        // ПРЯМЕ ПОСИЛАННЯ НА ТВОЮ ТАБЛИЦЮ (CSV)
+        const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSiZtkfaA6lvG8mtMoozlgqfIVBi-A4VQaGwt2sEjOP5KdQBcanfEvJ5XBpB0kgHUyuVvgBuRTyEo8-/pub?gid=492248995&single=true&output=csv";
         
         try {
-            const response = await fetch(csvUrl);
+            const response = await fetch(url);
             const data = await response.text();
-            const rows = data.split('\n').slice(1);
-            
+            const lines = data.split('\n').slice(1);
             let html = '';
-            rows.reverse().forEach(row => {
-                // Розбиваємо рядок, враховуючи можливі коми в лапках
-                const cols = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || [];
+
+            lines.reverse().forEach(line => {
+                const cols = line.split(',');
                 if(cols.length < 5) return;
 
-                const clean = (val) => val ? val.replace(/"/g, '') : '';
-
-                const photo = clean(cols[4]) || 'https://i.imgur.com/8N99m6p.png';
-                const title = clean(cols[5]) || 'Справа без назви';
-                const users = clean(cols[1]);
-                const violation = clean(cols[2]);
-                const desc = clean(cols[3]);
-                const video = clean(cols[6]);
+                const name = cols[5] || "Без назви";
+                const suspect = cols[1] || "Не вказано";
+                const reason = cols[2] || "Порушення";
+                const photo = cols[4] ? cols[4].trim() : "https://i.imgur.com/8N99m6p.png";
+                const video = cols[6] ? cols[6].trim() : "#";
 
                 html += `
-                <div class="case-card">
-                    <img src="${photo}" class="case-img" onerror="this.src='https://i.imgur.com/8N99m6p.png'">
-                    <div class="case-body">
-                        <div class="case-tag">КРИМІНАЛЬНЕ ПРОВАДЖЕННЯ</div>
-                        <div class="case-title">${title}</div>
-                        <div class="case-info"><b>Фігуранти:</b> ${users}</div>
-                        <div class="case-info"><b>Порушення:</b> ${violation}</div>
-                        <p style="font-size:13px; color:#94a3b8; border-top: 1px solid #444; padding-top:10px; min-height: 50px;">${desc}</p>
-                        <a href="${video}" target="_blank" class="btn-video">🎥 ПЕРЕГЛЯНУТИ ДОКАЗИ</a>
+                <div class="card">
+                    <img src="${photo}" class="card-img" onerror="this.src='https://i.imgur.com/8N99m6p.png'">
+                    <div class="card-content">
+                        <h3 style="margin:0 0 10px 0; color:#f1c40f">${name}</h3>
+                        <p><b>Фігуранти:</b> ${suspect}</p>
+                        <p><b>Суть:</b> ${reason}</p>
+                        <a href="${video}" target="_blank" class="btn">🎬 ДОКАЗИ</a>
                     </div>
                 </div>`;
             });
-            document.getElementById('archive-container').innerHTML = html || '<p>Архів порожній.</p>';
-        } catch (e) {
-            document.getElementById('archive-container').innerHTML = "<p>Помилка доступу до бази даних.</p>";
+            document.getElementById('cases-grid').innerHTML = html || "Справ поки немає";
+        } catch (err) {
+            document.getElementById('cases-grid').innerHTML = "Помилка завантаження. Перевірте публікацію таблиці.";
         }
     }
-
-    window.onload = loadCases;
+    loadCases();
 </script>
+
 </body>
 </html>
