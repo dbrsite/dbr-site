@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>ДБР | Панель Керування</title>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --panel-bg: #1e293b;
+            --accent: #2563eb;
+            --gold: #f1c40f;
+            --text: #f8fafc;
+            --border: rgba(255,255,255,0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .auth-card {
+            background: var(--panel-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+            width: 350px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        input {
+            width: 100%; padding: 12px; margin: 20px 0;
+            background: #0f172a; border: 1px solid #334155;
+            border-radius: 6px; color: white; text-align: center; box-sizing: border-box;
+            outline: none;
+        }
+
+        .btn-main {
+            width: 100%; padding: 12px;
+            background: var(--accent); color: white;
+            border: none; border-radius: 6px; cursor: pointer; font-weight: bold;
+        }
+
+        .main-container {
+            display: none;
+            width: 1000px;
+            height: 700px;
+            background: var(--panel-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            grid-template-columns: 260px 1fr;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        }
+
+        .sidebar {
+            background: #111827;
+            padding: 25px;
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .side-btn {
+            width: 100%; padding: 12px;
+            background: transparent; border: 1px solid transparent;
+            color: #94a3b8; text-align: left; cursor: pointer;
+            border-radius: 6px; margin-bottom: 8px; transition: 0.3s;
+            font-size: 14px;
+        }
+
+        .side-btn:hover, .side-btn.active {
+            background: rgba(37, 99, 235, 0.15);
+            color: white; border-color: var(--accent);
+        }
+
+        .content { padding: 40px; overflow-y: auto; background: rgba(15, 23, 42, 0.3); }
+
+        h2 { color: var(--gold); border-bottom: 2px solid #334155; padding-bottom: 15px; margin-top: 0; }
+        
+        .staff-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .staff-table th { text-align: left; color: #94a3b8; font-size: 12px; text-transform: uppercase; padding: 10px; border-bottom: 1px solid #334155; }
+        .staff-table td { padding: 15px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; }
+        
+        .role-badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+        .role-dir { background: #7f1d1d; color: #fecaca; }
+        .role-deputy { background: #1e3a8a; color: #bfdbfe; }
+        .role-agent { background: #334155; color: #f8fafc; }
+        
+        .tg-link { color: #38bdf8; text-decoration: none; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<div id="auth-box" class="auth-card">
+    <img src="dbr.png" width="80" style="margin-bottom: 15px;">
+    <h3>СИСТЕМА ДБР</h3>
+    <input type="password" id="pass-field" placeholder="Код доступу">
+    <button class="btn-main" onclick="checkPass()">УВІЙТИ</button>
+</div>
+
+<div id="panel-box" class="main-container">
+    <div class="sidebar">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:30px;">
+            <img src="dbr.png" width="35">
+            <span style="font-weight:bold; font-size:14px; color:var(--gold)">БАЗА ДАНИХ</span>
+        </div>
+        
+        <button class="side-btn active" onclick="load('staff', this)">👥 Особовий склад</button>
+        <button class="side-btn" onclick="load('osd', this)">🔍 Відділ ОСД</button>
+        <button class="side-btn" onclick="load('tsv', this)">⚔️ Відділ ТСВ</button>
+        
+        <div style="margin-top: auto;">
+            <button class="side-btn" style="color:#ef4444" onclick="location.href='index.html'">← На головну</button>
+        </div>
+    </div>
+    
+    <div class="content">
+        <div id="display"></div>
+    </div>
+</div>
+
+<script>
+    const dataBase = {
+        staff: `<h2>ОСОБОВИЙ СКЛАД</h2>
+                <table class="staff-table">
+                    <thead>
+                        <tr><th>Посада</th><th>Username</th><th>Зв'язок (TG)</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="role-badge role-dir">Директор</span></td><td>Vaylet009</td><td><a href="https://t.me/Vaylet009" class="tg-link">@Vaylet009</a></td></tr>
+                        <tr><td><span class="role-badge role-deputy">Заступник</span></td><td>artemMelnichenko2013</td><td><span class="tg-link">ID: 5242336088</span></td></tr>
+                        <tr><td><span class="role-badge role-agent">Працівник</span></td><td>Mr_Zver3000</td><td><span class="tg-link">ID: 6626655148</span></td></tr>
+                        <tr><td><span class="role-badge role-agent">Працівник</span></td><td>Marsianin_l0l</td><td><span class="tg-link">ID: 7636472784</span></td></tr>
+                        <tr><td><span class="role-badge role-agent">Працівник</span></td><td>Fakijdik</td><td><a href="https://t.me/Stylelive62" class="tg-link">@Stylelive62</a></td></tr>
+                        <tr><td><span class="role-badge role-agent">Працівник</span></td><td>Rjdef31</td><td><a href="https://t.me/Rt_1098" class="tg-link">@Rt_1098</a></td></tr>
+                        <tr><td><span class="role-badge role-agent">Працівник</span></td><td>constelations152</td><td><span class="tg-link">ID: 7460379767</span></td></tr>
+                        <tr><td><span class="role-badge role-agent">Працівник</span></td><td>Caston08963</td><td><span class="tg-link">ID: 7557434574</span></td></tr>
+                        <tr><td><span class="role-badge role-agent">Працівник</span></td><td>Kiril_30083008</td><td><span class="tg-link">ID: 8830930892</span></td></tr>
+                        <tr><td><span class="role-badge role-agent">Працівник</span></td><td>Yffgjjifh</td><td><span class="tg-link">ID: 5367053785</span></td></tr>
+                        <tr><td><span class="role-badge role-agent">Працівник</span></td><td>ROSTIKTHS</td><td><a href="https://t.me/Mister_Pumasik" class="tg-link">@Mister_Pumasik</a></td></tr>
+                    </tbody>
+                </table>`,
+        
+        osd: `<h2>ВІДДІЛ ОСД</h2>
+              <p><b>Оперативно-слідчий департамент</b> — основний підрозділ, що відповідає за розслідування та боротьбу з корупцією.</p>
+              <ul>
+                  <li>Проведення допитів посадових осіб.</li>
+                  <li>Збір та фіксація доказової бази.</li>
+                  <li>Робота під прикриттям та впровадження.</li>
+              </ul>`,
+        
+        tsv: `<h2>ВІДДІЛ ТСВ</h2>
+              <p><b>Тактико-силовий відділ</b> — підрозділ швидкого реагування для забезпечення силової підтримки.</p>
+              <ul>
+                  <li>Силове затримання особливо небезпечних злочинців.</li>
+                  <li>Проведення обшуків та штурмів будівель.</li>
+                  <li>Охорона слідчої групи під час виконання завдань.</li>
+              </ul>`
+    };
+
+    function checkPass() {
+        if(document.getElementById('pass-field').value === '1234') {
+            document.getElementById('auth-box').classList.add('hidden');
+            document.getElementById('panel-box').style.display = 'grid';
+            load('staff', document.querySelector('.side-btn'));
+        } else { alert('Невірний код!'); }
+    }
+
+    function load(key, btn) {
+        document.getElementById('display').innerHTML = dataBase[key];
+        document.querySelectorAll('.side-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+</script>
+
+</body>
+</html>
