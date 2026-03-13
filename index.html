@@ -9,6 +9,9 @@
             --dbr-blue-dark: #24344d; 
             --dbr-bg: #e1e7ec; 
             --accent-gold: #f1c40f;
+            /* Колір кнопок як на скріні */
+            --btn-color: #4b648a; 
+            --btn-hover: #3b4f6d;
         }
 
         body {
@@ -78,26 +81,31 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        /* Сайдбар */
-        .sidebar { display: flex; flex-direction: column; gap: 12px; }
+        /* Сайдбар та кнопки як на скріні */
+        .sidebar { display: flex; flex-direction: column; gap: 15px; }
 
         .btn-side {
-            background-color: #334155;
+            background-color: var(--btn-color);
             color: white;
-            padding: 16px;
+            padding: 20px 15px; /* Більші відступи для солідності */
             text-decoration: none;
             text-align: center;
             font-weight: bold;
-            font-size: 14px;
-            border-radius: 4px;
+            font-size: 15px; /* Трохи більший шрифт */
+            border-radius: 2px; /* Майже гострі кути */
             text-transform: uppercase;
             transition: 0.2s;
             border: none;
             cursor: pointer;
+            display: block;
+            line-height: 1.2;
+            letter-spacing: 0.5px;
         }
 
-        .btn-side:hover { background-color: #1e293b; transform: translateY(-2px); }
-        .btn-danger { background-color: #a93226; }
+        .btn-side:hover { 
+            background-color: var(--btn-hover); 
+            transform: none; /* Прибираємо підстрибування для строгості */
+        }
 
         /* Текстові стилі */
         h1 { color: var(--dbr-blue-dark); border-bottom: 2px solid #eee; padding-bottom: 10px; }
@@ -114,7 +122,8 @@
 
 <header>
     <div class="logo-box" onclick="showPage('home')">
-        <img src="dbr.png" alt="Лого"> <div>
+        <img src="dbr.png" alt="Лого"> 
+        <div>
             <div style="font-weight: bold; font-size: 16px;">ДЕРЖАВНЕ БЮРО</div>
             <div style="font-size: 14px; opacity: 0.8;">РОЗСЛІДУВАНЬ</div>
         </div>
@@ -133,7 +142,8 @@
             <b>ДБР</b> — це спеціалізована правоохоронна структура в грі <i>Emergency Hamburg</i>. Ми займаємося розслідуванням посадових злочинів та підтриманням рівня RP на сервері.
         </div>
 
-        <h2>Правила (Статут)</h2> <ol>
+        <h2>Правила (Статут)</h2> 
+        <ol>
             <li>Заборонено розслідування без RP-підстав і доказів.</li>
             <li><b>Використання зброї:</b> Працівник не має права застосовувати зброю без серйозної причини. Дозволено лише у випадках самозахисту або прямої загрози.</li>
             <li><b>Посади та звання:</b> Підвищення можливе тільки за результатами роботи. Заборонено розголошувати свою посаду та звання.</li>
@@ -153,7 +163,9 @@
     </div>
 
     <div id="about-page" class="main-card hidden">
-        <h1>Про Бюро</h1> <h2>Загальні положення</h2> <p>Державне Бюро Розслідувань (ДБР) — це структура, яка здійснює досудове розслідування у справах, пов'язаних із правопорушеннями з боку посадових осіб органів державної влади.</p>
+        <h1>Про Бюро</h1> 
+        <h2>Загальні положення</h2> 
+        <p>Державне Бюро Розслідувань (ДБР) — це структура, яка здійснює досудове розслідування у справах, пов'язаних із правопорушеннями з боку посадових осіб органів державної влади.</p>
         <ul>
             <li>Законність і об'єктивність</li>
             <li>Незалежність від інших органів</li>
@@ -161,7 +173,8 @@
             <li>RP-дотримання процедур і реалізм дій</li>
         </ul>
 
-        <h2>Повноваження</h2> <p>Співробітники ДБР мають право застосовувати заходи до гравців за порушення таких пунктів: <b>4, 14, 16, 26 та 46</b>.</p>
+        <h2>Повноваження</h2> 
+        <p>Співробітники ДБР мають право застосовувати заходи до гравців за порушення таких пунктів: <b>4, 14, 16, 26 та 46</b>.</p>
         <ul>
             <li>Розслідування службових злочинів посадовців.</li>
             <li>Використання RP-методів: спостереження, допити, фіксація доказів.</li>
@@ -169,7 +182,8 @@
             <li>Проведення спецоперацій за узгодженням.</li>
         </ul>
 
-        <h2>Обов'язки</h2> <ul>
+        <h2>Обов'язки</h2> 
+        <ul>
             <li>Дотримання RP-процедур та симуляції реального слідства.</li>
             <li>Фіксація кожної дії (звіти, відео).</li>
             <li>Передача матеріалів слідства до МВС або Суду.</li>
@@ -179,8 +193,8 @@
     </div>
 
     <div class="sidebar">
-        <a href="https://t.me/uarpeh/16403" target="_blank" class="btn-side">🔵 Telegram Канал</a>
-        <a href="https://t.me/uarpeh/16403" target="_blank" class="btn-side btn-danger">🚨 Звернутися до ДБР</a>
+        <a href="https://t.me/uarpeh" target="_blank" class="btn-side">ПОВІДОМИТИ ПРО КОРУПЦІЮ В ОРГАНАХ ДБР</a>
+        <a href="https://t.me/uarpeh" target="_blank" class="btn-side">ЗВЕРНУТИСЬ ДО ДБР</a>
     </div>
 </div>
 
