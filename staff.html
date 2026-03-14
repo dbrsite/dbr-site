@@ -24,6 +24,7 @@
             min-height: 100vh;
         }
 
+        /* ОСНОВНИЙ КОНТЕЙНЕР - ТЕПЕР ВІДКРИТИЙ ОДРАЗУ */
         .main-container {
             width: 1100px;
             height: 750px;
@@ -68,6 +69,7 @@
         .staff-table th { text-align: left; color: #94a3b8; font-size: 12px; text-transform: uppercase; padding: 10px; border-bottom: 1px solid #334155; }
         .staff-table td { padding: 15px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; }
         
+        /* БАДЖІ РОЛЕЙ */
         .role-badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
         .role-dir { background: #7f1d1d; color: #fecaca; }
         .role-deputy { background: #1e3a8a; color: #bfdbfe; }
@@ -75,7 +77,7 @@
         
         .tg-link { color: #38bdf8; text-decoration: none; }
 
-        /* DISCORD ПАНЕЛЬ ЗЛІВА ЗНИЗУ */
+        /* ПАНЕЛЬ ПРОФІЛЮ (DISCORD STYLE) */
         .user-footer {
             margin-top: auto;
             background: #232428;
@@ -87,7 +89,7 @@
 
         .user-avatar {
             width: 35px; height: 35px;
-            background: #4f545c; border-radius: 50%;
+            background: var(--accent); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-weight: bold; font-size: 16px; color: white; position: relative;
         }
@@ -106,7 +108,7 @@
 </head>
 <body>
 
-<div id="panel-box" class="main-container">
+<div class="main-container">
     <div class="sidebar">
         <div style="display:flex; align-items:center; gap:10px; margin-bottom:30px;">
             <img src="dbr.png" width="35" onerror="this.src='https://i.imgur.com/8N99m6p.png'">
@@ -120,14 +122,14 @@
         
         <div class="user-footer">
             <div class="user-avatar" id="u-avatar">
-                ?
+                A
                 <div class="status-dot"></div>
             </div>
             <div class="user-meta">
-                <span class="user-nick" id="u-name">Користувач</span>
+                <span class="user-nick" id="u-name">artemMelnichenko2013</span>
                 <span class="user-status">В мережі</span>
             </div>
-            <div class="logout-icon" title="Вийти" onclick="exitToLogin()">⚙️</div>
+            <div class="logout-icon" title="Вийти" onclick="location.href='index.html'">⚙️</div>
         </div>
     </div>
     
@@ -193,29 +195,16 @@
         if(btn) btn.classList.add('active');
     }
 
-    function exitToLogin() {
-        localStorage.removeItem('currentUser');
-        window.location.href = 'login.html';
-    }
-
+    // Авто-завантаження першої вкладки при запуску
     window.onload = function() {
-        const user = localStorage.getItem('currentUser');
-        if(!user) {
-            window.location.href = 'login.html';
-            return;
-        }
-        
-        const nameElem = document.getElementById('u-name');
-        const avatarElem = document.getElementById('u-avatar');
-        
-        nameElem.innerText = user;
-        avatarElem.childNodes[0].textContent = user.charAt(0).toUpperCase();
-        
-        if(user === "Vaylet009") {
-            nameElem.style.color = "#38bdf8";
-        }
-
         load('staff', document.querySelector('.side-btn'));
+        
+        // Підхоплюємо ім'я користувача, якщо він заходив через login.html
+        const user = localStorage.getItem('currentUser');
+        if(user) {
+            document.getElementById('u-name').innerText = user;
+            document.getElementById('u-avatar').childNodes[0].textContent = user.charAt(0).toUpperCase();
+        }
     }
 </script>
 
