@@ -11,7 +11,6 @@
             --accent-gold: #f1c40f;
             --btn-color: #4b648a; 
             --btn-hover: #3b4f6d;
-            --btn-dark: #2c3e50; /* Темніший колір для кнопок як на скріні */
         }
 
         body {
@@ -64,32 +63,19 @@
 
         .nav-menu li a:hover { color: var(--accent-gold); }
 
-        /* ГОЛОВНИЙ БАНЕР З ФОТО */
+        /* ГОЛОВНИЙ БАНЕР З ФОТО (Текст прибрано) */
         .hero-banner {
             width: 100%;
-            height: 400px;
-            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('dbrukraine.png') no-repeat center center;
+            height: 350px; /* Трохи зменшили висоту для кращого вигляду */
+            background: url('dbrukraine.png') no-repeat center center;
             background-size: cover;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             position: relative;
-        }
-
-        .hero-banner h2 {
-            color: white;
-            font-size: 36px;
-            text-align: center;
-            text-transform: uppercase;
-            text-shadow: 2px 2px 15px rgba(0,0,0,0.7);
-            padding: 0 20px;
-            margin: 0;
         }
 
         /* Контент */
         .wrapper {
             max-width: 1200px;
-            margin: -40px auto 30px auto; /* Наплив на фото */
+            margin: -30px auto 30px auto; /* Невеликий наплив на фото */
             display: grid;
             grid-template-columns: 1fr 340px;
             gap: 25px;
@@ -160,9 +146,7 @@
     </ul>
 </header>
 
-<div class="hero-banner" id="hero-img">
-    <h2>Закон один для всіх без винятку</h2>
-</div>
+<div class="hero-banner" id="hero-img"></div>
 
 <div class="wrapper">
     
@@ -178,7 +162,7 @@
             <li><b>Використання зброї:</b> Працівник не має права застосовувати зброю без серйозної причини. Дозволено лише у випадках самозахисту або прямої загрози.</li>
             <li><b>Посади та звання:</b> Підвищення можливе тільки за результатами роботи.</li>
             <li>Працівник має дотримуватись правил сервера.</li>
-            <li>Співпраця з іншими органами (Поліція, СБС) є важливою.</li>
+            <li>Співпраця з іншими органами (Поліція, СБС) є важливою для досягнення спільної мети.</li>
             <li>На службі дозволено розмовляти лише українською мовою.</li>
         </ol>
 
@@ -226,8 +210,8 @@
             document.getElementById('hero-img').style.display = 'none';
             document.querySelector('.wrapper').style.marginTop = '30px';
         } else {
-            document.getElementById('hero-img').style.display = 'flex';
-            document.querySelector('.wrapper').style.marginTop = '-40px';
+            document.getElementById('hero-img').style.display = 'block';
+            document.querySelector('.wrapper').style.marginTop = '-30px';
         }
 
         window.scrollTo(0,0);
