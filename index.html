@@ -9,7 +9,6 @@
             --dbr-blue-dark: #24344d; 
             --dbr-bg: #e1e7ec; 
             --accent-gold: #f1c40f;
-            /* Колір кнопок як на скріні */
             --btn-color: #4b648a; 
             --btn-hover: #3b4f6d;
         }
@@ -53,6 +52,7 @@
             padding: 0;
         }
 
+        /* Білий текст для всіх пунктів меню */
         .nav-menu li a {
             color: white;
             text-decoration: none;
@@ -81,18 +81,17 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        /* Сайдбар та кнопки як на скріні */
         .sidebar { display: flex; flex-direction: column; gap: 15px; }
 
         .btn-side {
             background-color: var(--btn-color);
             color: white;
-            padding: 20px 15px; /* Більші відступи для солідності */
+            padding: 20px 15px;
             text-decoration: none;
             text-align: center;
             font-weight: bold;
-            font-size: 15px; /* Трохи більший шрифт */
-            border-radius: 2px; /* Майже гострі кути */
+            font-size: 15px;
+            border-radius: 2px;
             text-transform: uppercase;
             transition: 0.2s;
             border: none;
@@ -104,16 +103,12 @@
 
         .btn-side:hover { 
             background-color: var(--btn-hover); 
-            transform: none; /* Прибираємо підстрибування для строгості */
         }
 
-        /* Текстові стилі */
         h1 { color: var(--dbr-blue-dark); border-bottom: 2px solid #eee; padding-bottom: 10px; }
         h2 { color: var(--dbr-blue-dark); margin-top: 25px; text-transform: uppercase; font-size: 18px; }
         .hidden { display: none; }
         .info-block { background: #f8f9fa; border-left: 4px solid var(--dbr-blue-dark); padding: 20px; margin-bottom: 20px; }
-        
-        .staff-link { color: var(--accent-gold) !important; border: 1px solid var(--accent-gold); padding: 5px 12px; border-radius: 4px; }
 
         footer { text-align: center; padding: 40px; opacity: 0.5; font-size: 12px; }
     </style>
@@ -130,8 +125,7 @@
     </div>
     <ul class="nav-menu">
         <li><a href="javascript:void(0)" onclick="showPage('about')">Про БЮРО</a></li>
-        <li><a href="staff.html" class="staff-link">🔐 Для працівників</a></li>
-    </ul>
+        <li><a href="news.html">Новини</a></li> <li><a href="staff.html">Для працівників</a></li> </ul>
 </header>
 
 <div class="wrapper">
