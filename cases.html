@@ -6,30 +6,35 @@
     <title>ДБР | Реєстр справ</title>
     <style>
         :root { --bg: #0f172a; --card: #1e293b; --accent: #2563eb; --text: #f8fafc; --gold: #f1c40f; }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 15px; margin: 0; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 15px; margin: 0; -webkit-tap-highlight-color: transparent; }
         
+        /* ШАПКА САЙТУ */
         .header { max-width: 1200px; margin: 0 auto 20px; display: flex; flex-direction: column; gap: 15px; border-bottom: 2px solid var(--accent); padding-bottom: 20px; }
         @media (min-width: 768px) { .header { flex-direction: row; justify-content: space-between; align-items: center; } }
         
+        /* КНОПКИ В ШАПЦІ */
         .btn-group { display: flex; gap: 10px; }
-        .btn { flex: 1; display: inline-block; padding: 14px 10px; background: var(--accent); color: white; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 13px; text-align: center; border: none; text-transform: uppercase; cursor: pointer; }
+        .btn { flex: 1; display: inline-block; padding: 14px 10px; background: var(--accent); color: white; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 13px; text-align: center; border: none; text-transform: uppercase; cursor: pointer; transition: 0.2s; -webkit-appearance: none; appearance: none; }
+        .btn:hover { opacity: 0.8; }
         .btn-add { background: #16a34a; }
         .btn-disabled { background: #334155 !important; color: #64748b !important; cursor: not-allowed; pointer-events: none; opacity: 0.6; }
 
+        /* СІТКА КАРТОК */
         .grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 20px; }
         @media (min-width: 640px) { grid-template-columns: repeat(2, 1fr); }
         @media (min-width: 1024px) { grid-template-columns: repeat(3, 1fr); }
 
-        .card { background: var(--card); border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        /* СТИЛЬ КАРТКИ (БЕЗ ФОТО) */
+        .card { background: var(--card); border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); position: relative; }
         
-        .status-badge { background: #e74c3c; padding: 4px 12px; border-radius: 6px; font-size: 10px; font-weight: 900; margin-bottom: 15px; width: fit-content; text-transform: uppercase; }
+        .status-badge { background: #e74c3c; padding: 4px 12px; border-radius: 6px; font-size: 10px; font-weight: 900; margin-bottom: 15px; width: fit-content; text-transform: uppercase; letter-spacing: 0.5px; }
         
-        .info-row { margin-bottom: 12px; font-size: 14px; color: #cbd5e1; }
-        .info-row b { color: var(--gold); display: block; font-size: 11px; text-transform: uppercase; margin-bottom: 2px; }
+        .info-row { margin-bottom: 12px; font-size: 14px; color: #cbd5e1; line-height: 1.4; }
+        .info-row b { color: var(--gold); display: block; font-size: 11px; text-transform: uppercase; margin-bottom: 2px; letter-spacing: 0.5px; }
         
-        .desc-box { font-size: 13px; color: #94a3b8; background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px; flex-grow: 1; }
+        .desc-box { font-size: 13px; color: #94a3b8; background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px; flex-grow: 1; min-height: 60px; }
         
-        #loader { text-align: center; padding: 50px; font-weight: bold; color: var(--gold); }
+        #loader { text-align: center; padding: 50px; font-weight: bold; color: var(--gold); grid-column: 1/-1; }
     </style>
 </head>
 <body>
@@ -37,7 +42,7 @@
 <div class="header">
     <div>
         <h1 style="margin:0; font-size: 24px; color: var(--gold);">АРХІВ СПРАВ</h1>
-        <p style="margin:5px 0 0; font-size: 11px; color: #94a3b8; text-transform: uppercase;">Державне Бюро Розслідувань</p>
+        <p style="margin:5px 0 0; font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">Державне Бюро Розслідувань</p>
     </div>
     <div class="btn-group">
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSeqGg_6sTa9Au72xe0c-IwRH-wv7d3If65Nfe8DUYO6PUN4Hw/viewform" class="btn btn-add">✚ Опублікувати</a>
@@ -50,10 +55,9 @@
 </div>
 
 <script>
-    function cleanText(input) {
+    function cleanVal(input) {
         if (!input) return "";
         let str = input.trim();
-        // Очищення від HTML тегів, якщо вони потрапили
         if (str.includes('<')) {
             const match = str.match(/(?:src|href)\s*=\s*["']([^"']+)["']/i);
             if (match) return match[1];
@@ -61,9 +65,16 @@
         return str.replace(/^["']|["']$/g, '').trim();
     }
 
-    // Перевірка чи є посилання YouTube
-    function isYouTube(url) {
-        return url && (url.includes('youtube.com') || url.includes('youtu.be'));
+    // Логіка кнопки YouTube: активна, тільки якщо посилання правильне
+    function getYoutubeBtn(url) {
+        const link = cleanVal(url);
+        const isYT = link && (link.includes('youtube.com') || link.includes('youtu.be'));
+        
+        if (isYT) {
+            return `<a href="${link}" target="_blank" class="btn">🎬 Переглянути відео</a>`;
+        } else {
+            return `<div class="btn btn-disabled">🎬 Відео не доступне</div>`;
+        }
     }
 
     async function loadCases() {
@@ -79,34 +90,29 @@
                 const cols = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || [];
                 if(cols.length < 5) return;
 
-                const videoLink = cleanText(cols[6]);
-                const title = cleanText(cols[5]) || 'Справа без назви';
-                
-                // Налаштування кнопки відео
-                let videoBtnHtml = '';
-                if (isYouTube(videoLink)) {
-                    videoBtnHtml = `<a href="${videoLink}" target="_blank" class="btn">🎬 Переглянути відео</a>`;
-                } else {
-                    videoBtnHtml = `<div class="btn btn-disabled">🎬 Відео не доступне</div>`;
-                }
+                const suspect = cleanVal(cols[1]); 
+                const reason = cleanVal(cols[2]);  
+                const desc = cleanVal(cols[3]);    
+                const title = cleanVal(cols[5]) || 'Справа без назви';
+                const videoLink = cols[6]; // Шоста колонка - силка на ютуб
 
                 html += `
                 <div class="card">
                     <div class="status-badge">Кримінальне провадження</div>
-                    <h2 style="margin:0 0 15px 0; color:var(--accent); font-size: 18px; text-transform: uppercase;">${title}</h2>
+                    <h2 style="margin:0 0 15px 0; color:var(--accent); font-size: 18px; text-transform: uppercase; line-height: 1.2;">${title}</h2>
                     
-                    <div class="info-row"><b>Підозрювані:</b> ${cleanText(cols[1])}</div>
-                    <div class="info-row"><b>Порушення:</b> ${cleanText(cols[2])}</div>
+                    <div class="info-row"><b>Фігуранти:</b> ${suspect}</div>
+                    <div class="info-row"><b>Суть порушення:</b> ${reason}</div>
                     
-                    <b>Опис справи:</b>
-                    <div class="desc-box">${cleanText(cols[3])}</div>
+                    <div class="info-row"><b>Деталі справи:</b></div>
+                    <div class="desc-box">${desc}</div>
                     
-                    ${videoBtnHtml}
+                    ${getYoutubeBtn(videoLink)}
                 </div>`;
             });
-            document.getElementById('cases-grid').innerHTML = html || "<div id='loader'>Архів порожній</div>";
+            document.getElementById('cases-grid').innerHTML = html || "<div id='loader'>Записів не знайдено</div>";
         } catch (e) {
-            document.getElementById('cases-grid').innerHTML = "<div id='loader'>Помилка синхронізації</div>";
+            document.getElementById('cases-grid').innerHTML = "<div id='loader' style='color:#ef4444'>Помилка завантаження бази даних</div>";
         }
     }
     window.onload = loadCases;
