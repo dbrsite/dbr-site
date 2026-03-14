@@ -57,22 +57,20 @@
 <script>
     function cleanVal(input) {
         if (!input) return "";
-        let str = input.trim();
-        if (str.includes('<')) {
-            const match = str.match(/(?:src|href)\s*=\s*["']([^"']+)["']/i);
-            if (match) return match[1];
-        }
-        return str.replace(/^["']|["']$/g, '').trim();
+        // Видаляємо пробіли та різні види лапок, які можуть прийти з CSV
+        return input.trim().replace(/^["']|["']$/g, '').trim();
     }
 
-    // Логіка кнопки YouTube: активна, тільки якщо посилання правильне
     function getYoutubeBtn(url) {
         const link = cleanVal(url);
-        const isYT = link && (link.includes('youtube.com') || link.includes('youtu.be'));
+        // Перевіряємо, чи містить рядок ознаки посилання на YouTube
+        const isYT = link.toLowerCase().includes('youtube.com') || link.toLowerCase().includes('youtu.be');
         
         if (isYT) {
             return `<a href="${link}" target="_blank" class="btn">🎬 Переглянути відео</a>`;
         } else {
+            // Виводимо в консоль для відладки, якщо відео не розпізнано
+            console.log("Знайдено посилання, але не YouTube:", link);
             return `<div class="btn btn-disabled">🎬 Відео не доступне</div>`;
         }
     }
@@ -83,23 +81,28 @@
         try {
             const response = await fetch(url);
             const data = await response.text();
-            const lines = data.split('\n').filter(l => l.trim()).slice(1);
+            // Розбиваємо на рядки, прибираємо пусті
+            const lines = data.split('\n').filter(l => l.trim().length > 0).slice(1);
             let html = '';
 
             lines.reverse().forEach(line => {
+                // Покращений розбір CSV для врахування ком всередині тексту
                 const cols = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || [];
-                if(cols.length < 5) return;
+                
+                // Якщо в рядку замало даних — пропускаємо
+                if(cols.length < 6) return;
 
                 const suspect = cleanVal(cols[1]); 
                 const reason = cleanVal(cols[2]);  
                 const desc = cleanVal(cols[3]);    
                 const title = cleanVal(cols[5]) || 'Справа без назви';
-                const videoLink = cols[6]; // Шоста колонка - силка на ютуб
+                // Беремо останню колонку (зазвичай це 7-ма за рахунком)
+                const videoLink = cols[cols.length - 1]; 
 
                 html += `
                 <div class="card">
                     <div class="status-badge">Кримінальне провадження</div>
-                    <h2 style="margin:0 0 15px 0; color:var(--accent); font-size: 18px; text-transform: uppercase; line-height: 1.2;">${title}</h2>
+                    <h2 style="margin:0 0 15px 0; color:var(--accent); font-size: 18px; text-transform: uppercase;">${title}</h2>
                     
                     <div class="info-row"><b>Фігуранти:</b> ${suspect}</div>
                     <div class="info-row"><b>Суть порушення:</b> ${reason}</div>
@@ -112,7 +115,8 @@
             });
             document.getElementById('cases-grid').innerHTML = html || "<div id='loader'>Записів не знайдено</div>";
         } catch (e) {
-            document.getElementById('cases-grid').innerHTML = "<div id='loader' style='color:#ef4444'>Помилка завантаження бази даних</div>";
+            console.error(e);
+            document.getElementById('cases-grid').innerHTML = "<div id='loader' style='color:#ef4444'>Помилка завантаження бази</div>";
         }
     }
     window.onload = loadCases;
