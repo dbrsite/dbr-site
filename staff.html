@@ -24,38 +24,14 @@
             min-height: 100vh;
         }
 
-        .auth-card {
-            background: var(--panel-bg);
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 50px rgba(0,0,0,0.5);
-            width: 350px;
-            text-align: center;
-            border: 1px solid var(--border);
-        }
-
-        input {
-            width: 100%; padding: 12px; margin: 20px 0;
-            background: #0f172a; border: 1px solid #334155;
-            border-radius: 6px; color: white; text-align: center; box-sizing: border-box;
-            outline: none;
-        }
-
-        .btn-main {
-            width: 100%; padding: 12px;
-            background: var(--accent); color: white;
-            border: none; border-radius: 6px; cursor: pointer; font-weight: bold;
-        }
-
         .main-container {
-            display: none; /* Сховано до авторизації */
-            width: 1000px;
-            height: 700px;
+            width: 1100px;
+            height: 750px;
             background: var(--panel-bg);
             border-radius: 12px;
             overflow: hidden;
-            display: none; 
-            grid-template-columns: 260px 1fr;
+            display: grid; 
+            grid-template-columns: 280px 1fr;
             border: 1px solid var(--border);
             box-shadow: 0 20px 60px rgba(0,0,0,0.6);
         }
@@ -92,23 +68,43 @@
         .staff-table th { text-align: left; color: #94a3b8; font-size: 12px; text-transform: uppercase; padding: 10px; border-bottom: 1px solid #334155; }
         .staff-table td { padding: 15px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; }
         
-        .role-badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+        .role-badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
         .role-dir { background: #7f1d1d; color: #fecaca; }
         .role-deputy { background: #1e3a8a; color: #bfdbfe; }
         .role-agent { background: #334155; color: #f8fafc; }
         
         .tg-link { color: #38bdf8; text-decoration: none; }
-        .hidden { display: none !important; }
+
+        /* DISCORD ПАНЕЛЬ ЗЛІВА ЗНИЗУ */
+        .user-footer {
+            margin-top: auto;
+            background: #232428;
+            margin-left: -25px; margin-right: -25px; margin-bottom: -25px;
+            padding: 12px 15px;
+            display: flex; align-items: center; gap: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .user-avatar {
+            width: 35px; height: 35px;
+            background: #4f545c; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 16px; color: white; position: relative;
+        }
+
+        .status-dot {
+            width: 12px; height: 12px; background: #3ba55d; border-radius: 50%;
+            position: absolute; bottom: -2px; right: -2px; border: 3px solid #232428;
+        }
+
+        .user-meta { flex-grow: 1; }
+        .user-nick { font-size: 14px; font-weight: bold; color: white; display: block; }
+        .user-status { font-size: 11px; color: #b5bac1; display: block; }
+        .logout-icon { cursor: pointer; opacity: 0.5; transition: 0.3s; color: white; margin-left: auto; }
+        .logout-icon:hover { opacity: 1; color: #ef4444; }
     </style>
 </head>
 <body>
-
-<div id="auth-box" class="auth-card">
-    <img src="dbr.png" width="80" style="margin-bottom: 15px;" onerror="this.src='https://i.imgur.com/8N99m6p.png'">
-    <h3>ДБР</h3>
-    <input type="password" id="pass-field" placeholder="Код доступу">
-    <button class="btn-main" onclick="checkPass()">УВІЙТИ</button>
-</div>
 
 <div id="panel-box" class="main-container">
     <div class="sidebar">
@@ -122,8 +118,16 @@
         <button class="side-btn" onclick="load('tsv', this)">⚔️ Відділ ТСВ</button>
         <button class="side-btn" onclick="window.location.href='cases.html'">📁 Справи</button>
         
-        <div style="margin-top: auto;">
-            <button class="side-btn" style="color:#ef4444" onclick="location.href='index.html'">← На головну</button>
+        <div class="user-footer">
+            <div class="user-avatar" id="u-avatar">
+                ?
+                <div class="status-dot"></div>
+            </div>
+            <div class="user-meta">
+                <span class="user-nick" id="u-name">Користувач</span>
+                <span class="user-status">В мережі</span>
+            </div>
+            <div class="logout-icon" title="Вийти" onclick="exitToLogin()">⚙️</div>
         </div>
     </div>
     
@@ -133,6 +137,14 @@
 </div>
 
 <script>
+    function row(role, name, tg, clrClass) {
+        return `<tr>
+            <td><span class="role-badge ${clrClass}">${role}</span></td>
+            <td><span style="color:white">${name}</span></td>
+            <td><span class="tg-link">${tg}</span></td>
+        </tr>`;
+    }
+
     const dataBase = {
         staff: `<h2>ОСОБОВИЙ СКЛАД</h2>
                 <table class="staff-table">
@@ -140,17 +152,21 @@
                         <tr><th>Посада</th><th>Username</th><th>Зв'язок (TG)</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td><span class="role-badge role-dir">Директор</span></td><td>Vaylet009</td><td><a href="https://t.me/Vaylet009" class="tg-link">@Vaylet009</a></td></tr>
-                        <tr><td><span class="role-badge role-deputy">Заступник</span></td><td>artemMelnichenko2013</td><td><span class="tg-link">ID: 5242336088</span></td></tr>
-                        <tr><td><span class="role-badge role-agent">Працівник</span></td><td>Mr_Zver3000</td><td><span class="tg-link">ID: 6626655148</span></td></tr>
-                        <tr><td><span class="role-badge role-agent">Працівник</span></td><td>Marsianin_l0l</td><td><span class="tg-link">ID: 7636472784</span></td></tr>
-                        <tr><td><span class="role-badge role-agent">Працівник</span></td><td>Fakijdik</td><td><a href="https://t.me/Stylelive62" class="tg-link">@Stylelive62</a></td></tr>
-                        <tr><td><span class="role-badge role-agent">Працівник</span></td><td>Rjdef31</td><td><a href="https://t.me/Rt_1098" class="tg-link">@Rt_1098</a></td></tr>
-                        <tr><td><span class="role-badge role-agent">Працівник</span></td><td>constelations152</td><td><span class="tg-link">ID: 7460379767</span></td></tr>
-                        <tr><td><span class="role-badge role-agent">Працівник</span></td><td>Caston08963</td><td><span class="tg-link">ID: 7557434574</span></td></tr>
-                        <tr><td><span class="role-badge role-agent">Працівник</span></td><td>Kiril_30083008</td><td><span class="tg-link">ID: 8830930892</span></td></tr>
-                        <tr><td><span class="role-badge role-agent">Працівник</span></td><td>Yffgjjifh</td><td><span class="tg-link">ID: 5367053785</span></td></tr>
-                        <tr><td><span class="role-badge role-agent">Працівник</span></td><td>ROSTIKTHS</td><td><a href="https://t.me/Mister_Pumasik" class="tg-link">@Mister_Pumasik</a></td></tr>
+                        ${row("Директор", "Vaylet009", "@Vaylet009", "role-dir")}
+                        ${row("Заступник", "artemMelnichenko2013", "ID: 5242336088", "role-deputy")}
+                        ${row("Працівник", "Mr_Zver3000", "ID: 6626655148", "role-agent")}
+                        ${row("Працівник", "Marsianin_l0l", "ID: 7636472784", "role-agent")}
+                        ${row("Працівник", "Fakijdik", "@Stylelive62", "role-agent")}
+                        ${row("Працівник", "Rjdef31", "@Rt_1098", "role-agent")}
+                        ${row("Працівник", "constelations152", "ID: 7460379767", "role-agent")}
+                        ${row("Працівник", "Caston08963", "ID: 7557434574", "role-agent")}
+                        ${row("Працівник", "Kiril_30083008", "ID: 8830930892", "role-agent")}
+                        ${row("Працівник", "Yffgjjifh", "ID: 5367053785", "role-agent")}
+                        ${row("Працівник", "ROSTIKTHS", "@Mister_Pumasik", "role-agent")}
+                        ${row("Працівник", "hdyfudjfv", "DATABASE", "role-agent")}
+                        ${row("Працівник", "levopravo2024", "DATABASE", "role-agent")}
+                        ${row("Працівник", "makxuitaem", "DATABASE", "role-agent")}
+                        ${row("Працівник", "per4ik_rrrt", "DATABASE", "role-agent")}
                     </tbody>
                 </table>`,
         
@@ -171,30 +187,36 @@
               </ul>`
     };
 
-    function checkPass() {
-        const inputPass = document.getElementById('pass-field').value;
-        if(inputPass === 'dbrpassword_1') {
-            document.getElementById('auth-box').classList.add('hidden');
-            document.getElementById('panel-box').style.display = 'grid';
-            // Завантажуємо першу вкладку
-            load('staff', document.querySelector('.side-btn'));
-        } else { 
-            alert('Невірний код!'); 
-        }
-    }
-
     function load(key, btn) {
         document.getElementById('display').innerHTML = dataBase[key];
         document.querySelectorAll('.side-btn').forEach(b => b.classList.remove('active'));
         if(btn) btn.classList.add('active');
     }
 
-    // Додаємо вхід по клавіші Enter
-    document.getElementById('pass-field').addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-            checkPass();
+    function exitToLogin() {
+        localStorage.removeItem('currentUser');
+        window.location.href = 'login.html';
+    }
+
+    window.onload = function() {
+        const user = localStorage.getItem('currentUser');
+        if(!user) {
+            window.location.href = 'login.html';
+            return;
         }
-    });
+        
+        const nameElem = document.getElementById('u-name');
+        const avatarElem = document.getElementById('u-avatar');
+        
+        nameElem.innerText = user;
+        avatarElem.childNodes[0].textContent = user.charAt(0).toUpperCase();
+        
+        if(user === "Vaylet009") {
+            nameElem.style.color = "#38bdf8";
+        }
+
+        load('staff', document.querySelector('.side-btn'));
+    }
 </script>
 
 </body>
