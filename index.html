@@ -9,8 +9,6 @@
             --dbr-blue-dark: #24344d; 
             --dbr-bg: #e1e7ec; 
             --accent-gold: #f1c40f;
-            --btn-color: #4b648a; 
-            --btn-hover: #3b4f6d;
         }
 
         body {
@@ -63,22 +61,19 @@
 
         .nav-menu li a:hover { color: var(--accent-gold); }
 
-        /* ГОЛОВНИЙ БАНЕР З ФОТО (Текст прибрано) */
+        /* ГОЛОВНИЙ БАНЕР */
         .hero-banner {
             width: 100%;
-            height: 350px; /* Трохи зменшили висоту для кращого вигляду */
+            height: 350px;
             background: url('dbrukraine.png') no-repeat center center;
             background-size: cover;
             position: relative;
         }
 
-        /* Контент */
+        /* Контент на всю ширину */
         .wrapper {
-            max-width: 1200px;
-            margin: -30px auto 30px auto; /* Невеликий наплив на фото */
-            display: grid;
-            grid-template-columns: 1fr 340px;
-            gap: 25px;
+            max-width: 1000px;
+            margin: -30px auto 30px auto;
             padding: 0 20px;
             position: relative;
             z-index: 5;
@@ -89,36 +84,6 @@
             padding: 40px;
             border-radius: 4px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-
-        .sidebar { display: flex; flex-direction: column; gap: 15px; }
-
-        .btn-side {
-            background-color: var(--btn-color);
-            color: white;
-            padding: 22px 20px;
-            text-decoration: none;
-            text-align: center;
-            font-weight: bold;
-            font-size: 14px;
-            border-radius: 2px;
-            text-transform: uppercase;
-            transition: 0.2s;
-            border: none;
-            cursor: pointer;
-            display: block;
-            line-height: 1.2;
-            letter-spacing: 0.5px;
-        }
-
-        /* Кнопка новин (темна як на скріні) */
-        .btn-news {
-            background-color: var(--dbr-blue-dark);
-        }
-
-        .btn-side:hover { 
-            background-color: var(--btn-hover); 
-            transform: translateY(-2px);
         }
 
         h1 { color: var(--dbr-blue-dark); border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 0; }
@@ -149,21 +114,18 @@
 <div class="hero-banner" id="hero-img"></div>
 
 <div class="wrapper">
-    
     <div id="home-page" class="main-card">
         <h1>Головна сторінка</h1>
         <div class="info-block">
-            <b>ДБР</b> — це спеціалізована правоохоронна структура в грі <i>Emergency Hamburg</i>. Ми займаємося розслідуванням посадових злочинів та підтриманням рівня RP на сервері.
+            <b>ДБР</b> — це спеціалізована правоохоронна структура. Ми займаємося розслідуванням посадових злочинів та підтриманням правопорядку.
         </div>
 
-        <h2>Правила</h2> 
+        <h2>Основні правила</h2> 
         <ol>
-            <li>Заборонено розслідування без RP-підстав і доказів.</li>
-            <li><b>Використання зброї:</b> Працівник не має права застосовувати зброю без серйозної причини. Дозволено лише у випадках самозахисту або прямої загрози.</li>
-            <li><b>Посади та звання:</b> Підвищення можливе тільки за результатами роботи.</li>
-            <li>Працівник має дотримуватись правил сервера.</li>
-            <li>Співпраця з іншими органами (Поліція, СБС) є важливою для досягнення спільної мети.</li>
-            <li>На службі дозволено розмовляти лише українською мовою.</li>
+            <li>Заборонено розслідування без належних підстав.</li>
+            <li>Працівник має право застосовувати зброю лише у випадках прямої загрози.</li>
+            <li>Дотримання субординації та наказів керівництва є обов'язковим.</li>
+            <li>На службі використовується виключно державна мова.</li>
         </ol>
 
         <div style="position: relative; width: 100%; height: 0; padding-top: 56.22%; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-top: 20px; overflow: hidden; border-radius: 8px;">
@@ -175,20 +137,14 @@
 
     <div id="about-page" class="main-card hidden">
         <h1>Про Бюро</h1> 
-        <p>Державне Бюро Розслідувань (ДБР) — це структура, яка здійснює досудове розслідування у справах, пов'язаних із правопорушеннями з боку посадових осіб.</p>
+        <p>Державне Бюро Розслідувань здійснює свою діяльність на принципах законності, незалежності та конфіденційності.</p>
         <h2>Повноваження</h2> 
         <ul>
-            <li>Розслідування службових злочинів посадовців.</li>
-            <li>Використання RP-методів: спостереження, допити.</li>
-            <li>Проведення спецоперацій за узгодженням.</li>
+            <li>Досудове розслідування службових злочинів.</li>
+            <li>Здійснення оперативно-розшукових заходів.</li>
+            <li>Міжнародне співробітництво у сфері правосуддя.</li>
         </ul>
         <button onclick="showPage('home')" style="margin-top: 20px; cursor: pointer; padding: 10px 20px; background: var(--dbr-blue-dark); color: white; border: none; border-radius: 4px;">← Назад</button>
-    </div>
-
-    <div class="sidebar">
-        <a href="https://t.me/uarpeh" target="_blank" class="btn-side">Повідомити про корупцію в органах ДБР</a>
-        <a href="https://t.me/uarpeh" target="_blank" class="btn-side">Звернутись до ДБР</a>
-        <a href="news.html" class="btn-side btn-news">Останні новини та події</a>
     </div>
 </div>
 
@@ -198,14 +154,10 @@
 
 <script>
     function showPage(pageId) {
-        // Ховаємо сторінки
         document.getElementById('home-page').classList.add('hidden');
         document.getElementById('about-page').classList.add('hidden');
-        
-        // Показуємо потрібну
         document.getElementById(pageId + '-page').classList.remove('hidden');
 
-        // Ховаємо банер з фото на сторінці "Про Бюро", щоб було зручніше читати
         if(pageId === 'about') {
             document.getElementById('hero-img').style.display = 'none';
             document.querySelector('.wrapper').style.marginTop = '30px';
@@ -213,7 +165,6 @@
             document.getElementById('hero-img').style.display = 'block';
             document.querySelector('.wrapper').style.marginTop = '-30px';
         }
-
         window.scrollTo(0,0);
     }
 </script>
