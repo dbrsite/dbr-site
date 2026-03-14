@@ -7,20 +7,31 @@
     <style>
         :root { --bg: #0f172a; --card: #1e293b; --accent: #2563eb; --text: #f8fafc; --gold: #f1c40f; }
         body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 15px; margin: 0; }
+        
         .header { max-width: 1200px; margin: 0 auto 20px; display: flex; flex-direction: column; gap: 15px; border-bottom: 2px solid var(--accent); padding-bottom: 20px; }
         @media (min-width: 768px) { .header { flex-direction: row; justify-content: space-between; align-items: center; } }
+        
         .btn-group { display: flex; gap: 10px; }
         .btn { flex: 1; display: inline-block; padding: 14px 10px; background: var(--accent); color: white; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 13px; text-align: center; border: none; text-transform: uppercase; cursor: pointer; }
         .btn-add { background: #16a34a; }
+
         .grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 20px; }
         @media (min-width: 640px) { grid-template-columns: repeat(2, 1fr); }
         @media (min-width: 1024px) { grid-template-columns: repeat(3, 1fr); }
-        .card { background: var(--card); border-radius: 15px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        .card-img { width: 100%; height: 230px; object-fit: cover; background: #000; border-bottom: 2px solid var(--accent); }
+
+        .card { background: var(--card); border-radius: 15px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; min-height: 400px; }
+        
+        /* Контейнер для фото */
+        .img-container { width: 100%; height: 200px; background: #000; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; border-bottom: 2px solid var(--accent); }
+        .card-img { width: 100%; height: 100%; object-fit: cover; }
+        .no-photo { color: #475569; font-size: 12px; font-weight: bold; text-transform: uppercase; }
+
         .card-content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
-        .status-badge { background: #e74c3c; padding: 4px 12px; border-radius: 6px; font-size: 10px; font-weight: 900; margin-bottom: 12px; display: inline-block; width: fit-content; }
+        .status-badge { background: #e74c3c; padding: 4px 12px; border-radius: 6px; font-size: 10px; font-weight: 900; margin-bottom: 12px; width: fit-content; }
+        
         .info-row { margin-bottom: 10px; font-size: 14px; color: #cbd5e1; }
         .info-row b { color: var(--gold); display: block; font-size: 11px; text-transform: uppercase; margin-bottom: 2px; }
+        
         .desc-box { font-size: 13px; color: #94a3b8; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; margin-top: auto; border: 1px solid rgba(255,255,255,0.05); }
         #loader { text-align: center; padding: 50px; font-weight: bold; color: var(--gold); }
     </style>
@@ -39,20 +50,17 @@
 </div>
 
 <div id="cases-grid" class="grid">
-    <div id="loader">Завантаження бази даних...</div>
+    <div id="loader">Синхронізація з базою даних...</div>
 </div>
 
 <script>
-    // Функція для очищення посилань від зайвого коду (якщо вставили весь блок <a> або <img>)
     function extractUrl(input) {
         if (!input) return "";
         let str = input.trim();
-        // Якщо це HTML-код, шукаємо href або src
         if (str.includes('<')) {
             const match = str.match(/(?:src|href)\s*=\s*["']([^"']+)["']/i);
             if (match) return match[1];
         }
-        // Прибираємо зайві лапки
         return str.replace(/^"|"$/g, '');
     }
 
@@ -69,16 +77,21 @@
                 const cols = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || [];
                 if(cols.length < 5) return;
 
-                const photo = extractUrl(cols[4]) || 'dbr.png';
+                const photo = extractUrl(cols[4]);
                 const video = extractUrl(cols[6]) || '#';
                 const title = extractUrl(cols[5]) || 'БЕЗ НАЗВИ';
 
+                // Якщо фото є - показуємо, якщо ні - пишемо текст
+                let photoHtml = photo 
+                    ? `<img src="${photo}" class="card-img" onerror="this.parentElement.innerHTML='<span class=\'no-photo\'>Фото недоступне</span>'">`
+                    : `<span class="no-photo">Фото не завантажено</span>`;
+
                 html += `
                 <div class="card">
-                    <img src="${photo}" class="card-img" onerror="this.src='dbr.png'">
+                    <div class="img-container">${photoHtml}</div>
                     <div class="card-content">
                         <div class="status-badge">КРИМІНАЛЬНЕ ПРОВАДЖЕННЯ</div>
-                        <h2 style="margin:0 0 15px 0; color:var(--accent); font-size: 19px;">${title}</h2>
+                        <h2 style="margin:0 0 15px 0; color:var(--accent); font-size: 19px; text-transform: uppercase;">${title}</h2>
                         <div class="info-row"><b>Підозрювані:</b> ${extractUrl(cols[1])}</div>
                         <div class="info-row"><b>Порушення:</b> ${extractUrl(cols[2])}</div>
                         <div class="desc-box">${extractUrl(cols[3])}</div>
