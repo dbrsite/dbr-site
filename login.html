@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ДБР | Авторизація</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #0b111b; /* Темний фон як на макеті */
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .login-card {
+            background-color: #1a222d;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            width: 380px;
+            text-align: center;
+        }
+
+        .logo-box {
+            background: #2c3644;
+            display: inline-block;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .logo-box img { height: 60px; }
+
+        h2 { color: white; margin-bottom: 25px; font-size: 18px; text-transform: uppercase; letter-spacing: 1px; }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 6px;
+            border: 1px solid #334155;
+            background-color: #e2e8f0; /* Світлий фон інпутів як на скріні */
+            box-sizing: border-box;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #2563eb; /* Яскраво-синя кнопка */
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .login-btn:hover { background-color: #1d4ed8; }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <div class="logo-box">
+        <img src="dbr.png" alt="ДБР">
+    </div>
+    <h2>Державне Бюро Розслідувань</h2>
+    
+    <input type="text" id="username" placeholder="Логін">
+    <input type="password" id="password" placeholder="Пароль">
+    
+    <button class="login-btn" onclick="login()">Увійти</button>
+</div>
+
+<script>
+    // Твоя база даних користувачів
+    const users = {
+        "hdyfudjfv": "dbrpass101",
+        "levopravo2024": "dbrpass102",
+        "makxuitaem": "dbrpass103",
+        "per4ik_rrrt": "dbrpass104",
+        "ROSTIKTHS": "dbrpass105",
+        "Fakijdik": "dbrpass106",
+        "Yffgjjifh": "dbrpass107",
+        "Kiril_30083008": "dbrpass108",
+        "Caston08963": "dbrpass109",
+        "constelations152": "dbrpass110",
+        "Mr_Zver3000": "dbrpass111",
+        "artemMelnichenko2013": "dbrpass112",
+        "Vaylet009": "dbrpass113",
+        "Rjdef31": "dbrpass114",
+        "Marsianin_l0l": "dbrpass115"
+    };
+
+    function login() {
+    const u = document.getElementById('username').value;
+    const p = document.getElementById('password').value;
+
+    if (users[u] && users[u] === p) {
+        // Зберігаємо ім'я користувача
+        localStorage.setItem('currentUser', u);
+        // Перекидаємо на сторінку для працівників
+        window.location.href = "staff.html"; 
+    } else {
+        alert("Помилка! Невірний логін або пароль.");
+    }
+}
+</script>
+
+</body>
+</html>
