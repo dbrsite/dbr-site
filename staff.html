@@ -15,7 +15,10 @@
 
         body {
             font-family: 'Segoe UI', sans-serif;
-            background: var(--bg-dark);
+            /* ДОДАНО ФОН КАРТИ */
+            background: url('dbrukraine.jpg') no-repeat center center;
+            background-size: cover;
+            background-attachment: fixed;
             color: var(--text);
             margin: 0;
             display: flex;
@@ -28,7 +31,8 @@
         .main-container {
             width: 1100px;
             height: 750px;
-            background: var(--panel-bg);
+            /* ТРОХИ БІЛЬШЕ ПРОЗОРОСТІ ДЛЯ ЕФЕКТУ СКЛА */
+            background: rgba(30, 41, 59, 0.6); 
             border-radius: 12px;
             overflow: hidden;
             display: grid; 
@@ -61,7 +65,14 @@
             color: white; border-color: var(--accent);
         }
 
-        .content { padding: 40px; overflow-y: auto; background: rgba(15, 23, 42, 0.3); }
+        /* ДОДАНО РОЗМИТТЯ (BACKDROP BLUR) ДЛЯ КОНТЕНТУ */
+        .content { 
+            padding: 40px; 
+            overflow-y: auto; 
+            background: rgba(15, 23, 42, 0.4); 
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
 
         h2 { color: var(--gold); border-bottom: 2px solid #334155; padding-bottom: 15px; margin-top: 0; }
         
@@ -199,7 +210,6 @@
     window.onload = function() {
         load('staff', document.querySelector('.side-btn'));
         
-        // Підхоплюємо ім'я користувача, якщо він заходив через login.html
         const user = localStorage.getItem('currentUser');
         if(user) {
             document.getElementById('u-name').innerText = user;
